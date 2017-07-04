@@ -11,10 +11,15 @@ import java.util.List;
  */
 @Service
 public class PostService {
-    @Autowired
+
     private JdbcTemplate jdbcTemplate;
 
-    public List get(){
+    @Autowired
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public List get() {
         return jdbcTemplate.queryForList("SELECT * FROM posts");
     }
 }
