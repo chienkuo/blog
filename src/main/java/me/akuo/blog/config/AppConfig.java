@@ -44,7 +44,7 @@ public class AppConfig {
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate(DruidDataSource druidDataSource){
+    public JdbcTemplate jdbcTemplate(DruidDataSource druidDataSource) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.setDataSource(druidDataSource);
         return jdbcTemplate;

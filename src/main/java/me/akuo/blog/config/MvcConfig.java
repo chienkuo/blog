@@ -14,8 +14,6 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ViewResolver;
@@ -32,8 +30,7 @@ import java.util.Map;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "me.akuo.blog", useDefaultFilters = false, includeFilters = {
-        @ComponentScan.Filter(type = FilterType.ANNOTATION, value = {Controller.class, ControllerAdvice.class})
-})
+        @ComponentScan.Filter(type = FilterType.ANNOTATION, value = {Controller.class, ControllerAdvice.class})})
 
 public class MvcConfig extends WebMvcConfigurationSupport {
 
@@ -143,7 +140,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
      */
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations("/WEB-INF/static/");
+        //registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
     }
 
     /**
@@ -159,12 +156,12 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         logger.info("CommonsMultipartResolver");
         return new CommonsMultipartResolver();
     }*/
-    @Bean
+    /*@Bean
     public MultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setMaxUploadSize(1000000);
         return multipartResolver;
-    }
+    }*/
 
     /**
      * 描述 : <异常处理器>. <br>
