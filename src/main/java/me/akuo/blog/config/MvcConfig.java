@@ -21,11 +21,15 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.handler.SimpleServletHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+
+import static freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS;
 
 @Configuration
 @EnableWebMvc
@@ -36,7 +40,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 
 
     @Autowired
-    private TimeInterceptor decryptInterceptor;
+    private TimeInterceptor timeInterceptor;
 
     /**
      * 描述 : <注册试图处理器>. <br>
@@ -47,10 +51,25 @@ public class MvcConfig extends WebMvcConfigurationSupport {
      * @return
      */
     @Bean
+    public FreeMarkerConfigurer freeMarkerConfigurer() {
+        FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
+//        freemarker.template.Configuration configuration = new freemarker.template.Configuration(DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+//        configurer.setConfiguration(configuration);
+        configurer.setTemplateLoaderPath("/WEB-INF/templates/");
+        configurer.setDefaultEncoding("UTF-8");
+        /*Properties properties = new Properties();
+        properties.setProperty("template_update_delay","6000");
+        configurer.setFreemarkerSettings(properties);*/
+        return configurer;
+    }
+
+    @Bean
     public ViewResolver viewResolver() {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setPrefix("/WEB-INF/views/jsp/");
-        viewResolver.setSuffix(".jsp");
+        FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
+        viewResolver.setPrefix("");
+        viewResolver.setSuffix(".ftl");
+        viewResolver.setContentType("text/html; charset=UTF-8");
+        viewResolver.setCache(true);
         return viewResolver;
     }
 
@@ -113,8 +132,8 @@ public class MvcConfig extends WebMvcConfigurationSupport {
      */
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(decryptInterceptor)
-                .addPathPatterns("/api/UserManage/*");
+        registry.addInterceptor(timeInterceptor)
+                .addPathPatterns("/**");
     }
 
     /**
@@ -140,7 +159,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
      */
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        //registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/static/**").addResourceLocations("WEB-INF/static/");
     }
 
     /**

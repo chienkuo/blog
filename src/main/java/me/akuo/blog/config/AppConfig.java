@@ -1,6 +1,11 @@
 package me.akuo.blog.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
+import com.vladsch.flexmark.ext.tables.TablesExtension;
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.options.MutableDataSet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 
 /**
  * Created by Akuo on 2017/6/5.
@@ -48,6 +54,26 @@ public class AppConfig {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.setDataSource(druidDataSource);
         return jdbcTemplate;
+    }
+
+    @Bean
+    public Parser mdParser(MutableDataSet options) {
+        Parser parser = Parser.builder(options).build();
+        return parser;
+    }
+
+    @Bean
+    public MutableDataSet mdDataSet() {
+        MutableDataSet options = new MutableDataSet();
+        options.set(Parser.EXTENSIONS, Arrays.asList(TablesExtension.create(), StrikethroughExtension.create()));
+        options.set(HtmlRenderer.SOFT_BREAK, "<br />\n");
+        return options;
+    }
+
+    @Bean
+    public HtmlRenderer mdHtmlRedderer(MutableDataSet options) {
+        HtmlRenderer renderer = HtmlRenderer.builder(options).build();
+        return renderer;
     }
 
 

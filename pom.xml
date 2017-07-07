@@ -7,7 +7,7 @@
     <groupId>me.akuo</groupId>
     <artifactId>blog</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <properties>
         <java.version>1.8</java.version>
@@ -18,26 +18,26 @@
         <log4j.version>2.8.2</log4j.version>
         <slf4j.version>1.7.25</slf4j.version>
         <plugin.jar.version>2.4</plugin.jar.version>
+        <plugin.war.version>2.2</plugin.war.version>
+        <plugin.compiler.version>3.1</plugin.compiler.version>
+        <project.source.encoding>UTF-8</project.source.encoding>
+        <build.plugins.plugin.version>2.6</build.plugins.plugin.version>
     </properties>
 
     <build>
         <finalName>akuo-blog</finalName>
         <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <targetPath>conf</targetPath>
-            </resource>
-            <resource>
+            <!--<resource>
                 <directory>src/main/webapp</directory>
-                <targetPath>META-INF/resource</targetPath>
-            </resource>
+                <targetPath>/</targetPath>
+            </resource>-->
         </resources>
         <plugins>
             <!-- 编译插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>${plugin.compiler.version}</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -50,23 +50,31 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${plugin.war.version}</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+           <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>${plugin.jar.version}</version>
                 <configuration>
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib</classpathPrefix>
+                            <classpathPrefix>WEB-INF/lib</classpathPrefix>
                             <mainClass>me.akuo.blog.App</mainClass>
                         </manifest>
                         <manifestEntries>
-                            <Class-Path>conf/</Class-Path>
+                            <!--<Class-Path>conf/</Class-Path>-->
                             <Main-Class>me.akuo.blog.App</Main-Class>
                         </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
@@ -84,7 +92,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 
@@ -102,6 +110,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
             <version>${spring.version}</version>
         </dependency>
         <dependency>
@@ -149,6 +162,17 @@
             <artifactId>tomcat-embed-jasper</artifactId>
             <version>${tomcat.embed.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.26-incubating</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-all</artifactId>
+            <version>0.20.0</version>
+        </dependency>
+
     </dependencies>
 
 </project>
