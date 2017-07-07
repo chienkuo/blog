@@ -24,15 +24,15 @@ import java.util.Arrays;
 @PropertySource(value = "classpath:app.properties")
 public class AppConfig {
 
-    @Value("${blog.jdbc.url}")
-    private String url;
+    @Value("${blog.db.name}")
+    private String dbName;
     @Value("${blog.http.port}")
     private String port;
 
     @Bean(name = "dataSource", initMethod = "init", destroyMethod = "close")
     public DruidDataSource createDataSource() throws SQLException {
         DruidDataSource druidDataSource = new DruidDataSource();
-        druidDataSource.setUrl(this.url);
+        druidDataSource.setUrl("jdbc:sqlite:" + this.getClass().getResource("/").getPath() + this.dbName);
         druidDataSource.setInitialSize(1);
         druidDataSource.setMinIdle(1);
         druidDataSource.setMaxActive(10);

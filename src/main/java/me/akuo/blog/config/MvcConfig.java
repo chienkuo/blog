@@ -65,11 +65,13 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public ViewResolver viewResolver() {
+        org.springframework.web.servlet.view.freemarker.
         FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
         viewResolver.setPrefix("");
         viewResolver.setSuffix(".ftl");
         viewResolver.setContentType("text/html; charset=UTF-8");
         viewResolver.setCache(true);
+        viewResolver.setExposeSpringMacroHelpers(true);
         return viewResolver;
     }
 
